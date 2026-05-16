@@ -840,6 +840,7 @@ footer .grad-text{
       <div class="rv d1">
         <div class="contact-form">
           <form id="contact-form" autocomplete="off">
+            <input type="hidden" name="access_key" value="722bc054-c2a6-45d0-ba33-58610afc74cf">
             <div class="form-row">
               <div class="fg"><label class="fl">Your Name</label><input type="text" class="fi" id="f-name" placeholder="Jane Doe" required></div>
               <div class="fg"><label class="fl">Email</label><input type="email" class="fi" id="f-email" placeholder="jane@example.com" required></div>
@@ -1279,14 +1280,15 @@ document.getElementById('contact-form').addEventListener('submit',async e=>{
   msg.className='form-msg'; msg.textContent='';
 
   try{
-    const res=await fetch('/api/contact',{
+    const res=await fetch('https://api.web3forms.com/submit',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
       body:JSON.stringify({
-        name   :document.getElementById('f-name').value,
-        email  :document.getElementById('f-email').value,
-        subject:document.getElementById('f-subject').value,
-        message:msgEl.value,
+        access_key:document.querySelector('[name="access_key"]').value,
+        name      :document.getElementById('f-name').value,
+        email     :document.getElementById('f-email').value,
+        subject   :document.getElementById('f-subject').value||'New Portfolio Contact',
+        message   :msgEl.value,
       })
     });
     const data=await res.json();
@@ -1339,4 +1341,4 @@ function closeMob(){document.getElementById('mob-nav').classList.remove('open')}
 document.getElementById('yr').textContent=new Date().getFullYear();
 </script>
 </body>
-</html>z
+</html>
