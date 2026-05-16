@@ -1144,6 +1144,20 @@ DATA.skills.forEach((sk,i)=>{
   panelsEl.appendChild(panel);
 });
 
+// ── Scroll reveal (declared here so initProjects can use it) ─────
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    e.target.classList.add('in');
+    if(e.target.classList.contains('active')){
+      setTimeout(()=>e.target.querySelectorAll('.ring-fill').forEach(f=>{
+        f.style.strokeDasharray=`${parseFloat(f.dataset.pct)*2.827} 283`;
+      }),100);
+    }
+    io.unobserve(e.target);
+  });
+},{threshold:.12});
+
 // ── Projects ─────────────────────────────────────────────────────
 function pSVG(color){
   const h=color.replace('#','');
@@ -1170,52 +1184,65 @@ function pSVG(color){
   </svg>`;
 }
 
-const cats=['All',...new Set(DATA.projects.map(p=>p.cat))];
-const filtersEl=document.getElementById('proj-filters');
-cats.forEach((c,i)=>{
-  const b=document.createElement('button');
-  b.className='pf-btn'+(i===0?' act':'');
-  b.textContent=c;
-  b.onclick=()=>{
-    document.querySelectorAll('.pf-btn').forEach(x=>x.classList.remove('act'));b.classList.add('act');
-    document.querySelectorAll('.proj-card').forEach(x=>x.classList.toggle('hid',c!=='All'&&x.dataset.cat!==c));
-  };
-  filtersEl.appendChild(b);
-});
-
-const gridEl=document.getElementById('proj-grid');
-DATA.projects.forEach((p,pi)=>{
-  const card=document.createElement('div');
-  card.className=`proj-card rv d${(pi%3)+1}`;
-  card.dataset.cat=p.cat;
-  card.innerHTML=`
-    <div class="proj-vis">${pSVG(p.color)}<div class="proj-overlay"></div></div>
-    <div class="proj-body">
-      <div class="proj-cat">${p.cat}</div>
-      <div class="proj-title">${p.title}</div>
-      <p class="proj-desc">${p.short}</p>
-      <div class="proj-tags">${p.tags.map(t=>`<span class="pt">${t}</span>`).join('')}</div>
-      <div class="proj-footer">
-        <div style="display:flex;gap:1rem">
-          ${p.github&&p.github!='#'?`<a href="${p.github}" target="_blank" rel="noopener" class="proj-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg> Code</a>`:''}
-        </div>
-        <div class="proj-more" onclick="openModal(${pi})">Details →</div>
-      </div>
-    </div>`;
-  // 3D tilt
-  card.addEventListener('mousemove',e=>{
-    const r=card.getBoundingClientRect();
-    const x=(e.clientX-r.left)/r.width-.5;
-    const y=(e.clientY-r.top)/r.height-.5;
-    card.style.transform=`perspective(800px) rotateY(${x*12}deg) rotateX(${-y*10}deg) translateZ(8px)`;
+function initProjects(){
+  const cats=['All',...new Set(DATA.projects.map(p=>p.cat))];
+  const filtersEl=document.getElementById('proj-filters');
+  filtersEl.innerHTML='';
+  cats.forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.className='pf-btn'+(i===0?' act':'');
+    b.textContent=c;
+    b.onclick=()=>{
+      document.querySelectorAll('.pf-btn').forEach(x=>x.classList.remove('act'));b.classList.add('act');
+      document.querySelectorAll('.proj-card').forEach(x=>x.classList.toggle('hid',c!=='All'&&x.dataset.cat!==c));
+    };
+    filtersEl.appendChild(b);
   });
-  card.addEventListener('mouseleave',()=>{card.style.transform='perspective(800px) rotateY(0) rotateX(0) translateZ(0)'});
-  gridEl.appendChild(card);
-});
+
+  const gridEl=document.getElementById('proj-grid');
+  gridEl.innerHTML='';
+  DATA.projects.forEach((p,pi)=>{
+    const card=document.createElement('div');
+    card.className=`proj-card rv d${(pi%3)+1}`;
+    card.dataset.cat=p.cat;
+    const visHTML=p.imageUrl
+      ?`<img src="${p.imageUrl}?w=600&auto=format" style="width:100%;height:100%;object-fit:cover">`
+      :pSVG(p.color||'#7c3aed');
+    card.innerHTML=`
+      <div class="proj-vis">${visHTML}<div class="proj-overlay"></div></div>
+      <div class="proj-body">
+        <div class="proj-cat">${p.cat}</div>
+        <div class="proj-title">${p.title}</div>
+        <p class="proj-desc">${p.short}</p>
+        <div class="proj-tags">${p.tags.map(t=>`<span class="pt">${t}</span>`).join('')}</div>
+        <div class="proj-footer">
+          <div style="display:flex;gap:1rem">
+            ${p.github&&p.github!='#'?`<a href="${p.github}" target="_blank" rel="noopener" class="proj-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg> Code</a>`:''}
+          </div>
+          <div class="proj-more" onclick="openModal(${pi})">Details →</div>
+        </div>
+      </div>`;
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-.5;
+      const y=(e.clientY-r.top)/r.height-.5;
+      card.style.transform=`perspective(800px) rotateY(${x*12}deg) rotateX(${-y*10}deg) translateZ(8px)`;
+    });
+    card.addEventListener('mouseleave',()=>{card.style.transform='perspective(800px) rotateY(0) rotateX(0) translateZ(0)'});
+    gridEl.appendChild(card);
+  });
+
+  // Re-observe new cards for scroll reveal
+  document.querySelectorAll('.proj-card.rv').forEach(el=>io.observe(el));
+}
+initProjects();
 
 function openModal(i){
   const p=DATA.projects[i];
-  document.getElementById('modal-vis').innerHTML=`${pSVG(p.color)}<button class="modal-close-btn" id="modal-close" onclick="closeModal()">✕</button>`;
+  const visHTML=p.imageUrl
+    ?`<img src="${p.imageUrl}?w=700&auto=format" style="width:100%;height:100%;object-fit:cover">`
+    :pSVG(p.color||'#7c3aed');
+  document.getElementById('modal-vis').innerHTML=`${visHTML}<button class="modal-close-btn" id="modal-close" onclick="closeModal()">✕</button>`;
   document.getElementById('modal-cat').textContent=p.cat;
   document.getElementById('modal-title').textContent=p.title;
   document.getElementById('modal-desc').textContent=p.full;
@@ -1308,20 +1335,7 @@ document.getElementById('contact-form').addEventListener('submit',async e=>{
   }
 });
 
-// ── Scroll reveal ────────────────────────────────────────────────
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(!e.isIntersecting)return;
-    e.target.classList.add('in');
-    // Animate first skills panel rings on reveal
-    if(e.target.classList.contains('active')){
-      setTimeout(()=>e.target.querySelectorAll('.ring-fill').forEach(f=>{
-        f.style.strokeDasharray=`${parseFloat(f.dataset.pct)*2.827} 283`;
-      }),100);
-    }
-    io.unobserve(e.target);
-  });
-},{threshold:.12});
+// Observe all static .rv elements (projects re-observe themselves inside initProjects)
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 
 // ── Active nav ───────────────────────────────────────────────────
@@ -1339,6 +1353,37 @@ function closeMob(){document.getElementById('mob-nav').classList.remove('open')}
 
 // ── Footer year ──────────────────────────────────────────────────
 document.getElementById('yr').textContent=new Date().getFullYear();
+
+// ── Sanity CMS Live Fetch ─────────────────────────────────────────
+(async function loadSanityProjects(){
+  const PROJECT_ID = 'g9gw9bgg';
+  const DATASET    = 'production';
+  const query = `*[_type=="project"]|order(order asc){
+    title,cat,color,short,full,highlights,tags,github,demo,videoUrl,
+    "imageUrl":image.asset->url
+  }`;
+  try{
+    const url=`https://${PROJECT_ID}.api.sanity.io/v2024-01-01/data/query/${DATASET}?query=${encodeURIComponent(query)}`;
+    const {result}=await (await fetch(url)).json();
+    if(!result?.length) return; // no Sanity data yet — keep hardcoded projects
+    DATA.projects=result.map((p,i)=>({
+      id        :`sanity-${i}`,
+      title     :p.title      ||'Untitled',
+      cat       :p.cat        ||'Other',
+      color     :p.color      ||'#7c3aed',
+      short     :p.short      ||'',
+      full      :p.full       ||'',
+      highlights:p.highlights ||[],
+      tags      :p.tags       ||[],
+      github    :p.github     ||'#',
+      demo      :p.demo       ||p.videoUrl||'#',
+      imageUrl  :p.imageUrl   ||null,
+    }));
+    initProjects(); // re-render grid with live Sanity data
+  }catch(err){
+    console.warn('Sanity fetch failed — using local data.',err);
+  }
+})();
 </script>
 </body>
 </html>
