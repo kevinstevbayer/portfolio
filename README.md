@@ -43,7 +43,7 @@ Since the frontend is a single static file, you can simply open `index.html` in 
 ```bash
 npx serve .
 ```
-2. Running the Sanity Studio (Admin Dashboard)
+### 2. Running the Sanity Studio (Admin Dashboard)
 The Sanity Studio configuration lives in the kevin-portfolio-studio directory.
 
 Bash
