@@ -160,12 +160,12 @@ nav.scrolled{
   display:flex;align-items:stretch;
 }
 
-/* The outer hero card — full-width, full-height, black bg */
+/* The outer hero card — full-width, full-height, theme bg */
 .hero-card{
   position:relative;
   width:100%;
   min-height:calc(100vh - var(--nav-h));
-  background:#000;
+  background:var(--bg);
   overflow:hidden;
   display:flex;
 }
@@ -313,14 +313,26 @@ nav.scrolled{
   background:transparent;
 }
 
-/* Fade gradient — left edge bleeds into dark background */
+/* Cover div that sits over the Spline watermark corner */
+.spline-watermark-cover{
+  position:absolute;
+  bottom:0;
+  right:0;
+  width:230px;
+  height:56px;
+  background:linear-gradient(to left,#030711 55%,transparent 100%);
+  z-index:10;
+  pointer-events:none;
+}
+
+/* Fade gradient — left edge bleeds into theme background */
 .hero-right::before{
   content:'';
   position:absolute;
   inset:0;
   left:-2px;
   width:120px;
-  background:linear-gradient(to right,#000 0%,transparent 100%);
+  background:linear-gradient(to right,#030711 0%,transparent 100%);
   z-index:3;
   pointer-events:none;
 }
@@ -331,7 +343,7 @@ nav.scrolled{
   position:absolute;
   bottom:0;left:0;right:0;
   height:80px;
-  background:linear-gradient(to top,#000 0%,transparent 100%);
+  background:linear-gradient(to top,#030711 0%,transparent 100%);
   z-index:3;
   pointer-events:none;
 }
@@ -854,10 +866,13 @@ footer .grad-text{
         <!-- spline-viewer web component — loads the robot scene -->
         <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.96/build/spline-viewer.js"></script>
         <spline-viewer
+          id="spline-scene"
           url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
           style="width:100%;height:100%;background:transparent;"
           loading-anim-type="none"
         ></spline-viewer>
+        <!-- Hard cover over the "Built with Spline" badge in the bottom-right -->
+        <div class="spline-watermark-cover" aria-hidden="true"></div>
       </div>
 
     </div><!-- /hero-cols -->
@@ -1541,6 +1556,33 @@ document.getElementById('yr').textContent=new Date().getFullYear();
     }));
     initProjects();
   }catch(err){console.warn('Sanity fetch failed — using local data.',err);}
+})();
+
+/* ══════════════════════════════════════════
+   SPLINE WATERMARK REMOVAL
+   Polls the spline-viewer shadow root and hides
+   the #logo badge Spline injects into its canvas.
+══════════════════════════════════════════ */
+(function killSplineBadge(){
+  const el=document.getElementById('spline-scene');
+  if(!el)return;
+  function tryHide(){
+    const root=el.shadowRoot;
+    if(!root)return;
+    // Spline injects a #logo anchor in the shadow root
+    const badge=root.querySelector('#logo');
+    if(badge){badge.style.display='none';return;}
+    // Also try the canvas parent div if badge not yet found
+    const all=root.querySelectorAll('a[href*="spline"],div[id*="logo"],div[class*="logo"]');
+    all.forEach(n=>n.style.display='none');
+  }
+  // Try immediately, then poll until found
+  tryHide();
+  const t=setInterval(()=>{tryHide();},200);
+  // Stop polling after 8 seconds
+  setTimeout(()=>clearInterval(t),8000);
+  // Also run when spline-viewer fires its load event
+  el.addEventListener('load',()=>{tryHide();clearInterval(t);});
 })();
 </script>
 </body>
