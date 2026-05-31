@@ -1865,6 +1865,35 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     initProjects();
   } catch(_){ /* falls back to local DATA.projects */ }
 })();
+/* ══════════════════════════════════════════
+   SPLINE GLOBAL MOUSE TRACKING
+   Ensures the 3D model tracks the cursor
+   even when hovering over the left text area.
+══════════════════════════════════════════ */
+(function enableGlobalSplineTracking(){
+  const viewer = document.getElementById('spline-scene');
+  if(!viewer) return;
+
+  function forwardMouse(e){
+    if(!viewer.shadowRoot) return;
+    const canvas = viewer.shadowRoot.querySelector('canvas');
+    if(!canvas) return;
+
+    // Dispatch a cloned mouse event to the internal Spline canvas
+    try {
+      canvas.dispatchEvent(new MouseEvent('mousemove', {
+        bubbles: false,
+        clientX: e.clientX, 
+        clientY: e.clientY,
+        screenX: e.screenX, 
+        screenY: e.screenY
+      }));
+    } catch(err) {}
+  }
+
+  // Listen to mouse movement across the entire document
+  document.addEventListener('mousemove', forwardMouse, { passive: true });
+})();
 </script>
 </body>
 </html>
