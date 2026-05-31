@@ -33,7 +33,6 @@
   --nav-h:    68px;
   --r:        14px;
   --r-sm:     8px;
-
   --glass-bg:      rgba(10,17,32,.55);
   --glass-border:  rgba(124,58,237,.22);
   --glass-blur:    blur(24px) saturate(180%);
@@ -151,7 +150,7 @@ nav.scrolled{
 .mob-nav a:hover{color:var(--p2)}
 
 /* ══════════════════════════════════════════
-   HERO — STAGE 1: SPLINE ROBOT
+   HERO
 ══════════════════════════════════════════ */
 #hero{
   position:relative;z-index:1;
@@ -159,8 +158,6 @@ nav.scrolled{
   padding:var(--nav-h) 0 0;
   display:flex;align-items:stretch;
 }
-
-/* The outer hero card — full-width, full-height, theme bg */
 .hero-card{
   position:relative;
   width:100%;
@@ -169,17 +166,12 @@ nav.scrolled{
   overflow:hidden;
   display:flex;
 }
-
-/* ── Spotlight SVG ── */
 .spotlight-svg{
   pointer-events:none;
   position:absolute;
   z-index:1;
-  /* mirror of the aceternity spotlight positioning */
-  top:-40%;
-  left:-10%;
-  width:138%;
-  height:169%;
+  top:-40%;left:-10%;
+  width:138%;height:169%;
   opacity:0;
   animation:spotlight-fade 1.2s 0.5s ease forwards;
 }
@@ -187,26 +179,15 @@ nav.scrolled{
   0%{opacity:0;transform:translateX(-20px) rotate(-10deg)}
   100%{opacity:1;transform:translateX(0) rotate(0deg)}
 }
-
-/* ── Two-column layout ── */
 .hero-cols{
-  position:relative;
-  z-index:2;
-  display:flex;
-  width:100%;
-  align-items:center;
+  position:relative;z-index:2;
+  display:flex;width:100%;align-items:center;
 }
-
-/* Left: text */
 .hero-left{
   flex:1;
   padding:clamp(3rem,8vw,6rem) clamp(2rem,6vw,5rem);
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  min-height:100%;
+  display:flex;flex-direction:column;justify-content:center;min-height:100%;
 }
-
 .hero-badge{
   display:inline-flex;align-items:center;gap:.6rem;
   font-family:'JetBrains Mono',monospace;font-size:.75rem;
@@ -215,7 +196,6 @@ nav.scrolled{
   opacity:0;animation:fadeUp .8s .2s forwards;
 }
 .hero-badge::before{content:'';width:32px;height:1px;background:var(--c)}
-
 .hero-name{
   font-family:'Syne',sans-serif;font-weight:800;
   font-size:clamp(3.2rem,8vw,6.5rem);line-height:.92;
@@ -228,7 +208,6 @@ nav.scrolled{
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   animation:shimmer 4s linear infinite;
 }
-
 .hero-role{
   font-family:'JetBrains Mono',monospace;font-size:clamp(.85rem,1.8vw,1.1rem);
   color:var(--muted2);margin-bottom:1.5rem;min-height:2em;
@@ -239,18 +218,15 @@ nav.scrolled{
   background:var(--c);vertical-align:middle;margin-left:2px;
   animation:blink .7s infinite;
 }
-
 .hero-desc{
   font-size:1.02rem;color:var(--muted2);max-width:440px;
   margin-bottom:2.5rem;line-height:1.85;
   opacity:0;animation:fadeUp .8s .65s forwards;
 }
-
 .hero-actions{
   display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;
   opacity:0;animation:fadeUp .8s .8s forwards;
 }
-
 .btn-primary{
   padding:.8rem 2rem;
   background:linear-gradient(135deg,var(--p),var(--c));
@@ -269,7 +245,6 @@ nav.scrolled{
 }
 .btn-primary:hover::after{transform:translateX(120%) skewX(-15deg)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--glow-p)}
-
 .btn-ghost{
   padding:.8rem 2rem;
   background:rgba(124,58,237,.06);
@@ -279,7 +254,6 @@ nav.scrolled{
   transition:var(--ease);backdrop-filter:blur(8px);
 }
 .btn-ghost:hover{background:var(--glow-p);border-color:var(--p);transform:translateY(-2px)}
-
 .hero-social{
   display:flex;gap:.75rem;
   opacity:0;animation:fadeUp .8s .95s forwards;
@@ -294,15 +268,15 @@ nav.scrolled{
 }
 .hero-social a:hover{color:var(--c);border-color:var(--c);background:var(--glow-c);transform:translateY(-3px)}
 
-/* Right: Spline iframe container */
+/* ─── SPLINE RIGHT COLUMN ─── */
 .hero-right{
   flex:1;
   position:relative;
   min-height:540px;
+  /* Match the theme bg so the Spline default grey box is invisible */
+  background:#030711;
   opacity:0;animation:fadeLeft .9s 1.0s forwards;
 }
-
-/* The Spline iframe fills the right column fully */
 .hero-right iframe,
 .hero-right spline-viewer{
   position:absolute;
@@ -312,66 +286,47 @@ nav.scrolled{
   border:none;
   background:transparent;
 }
-
-/* Cover div that sits over the Spline watermark corner */
-.spline-watermark-cover{
-  position:absolute;
-  bottom:0;
-  right:0;
-  width:230px;
-  height:56px;
-  background:linear-gradient(to left,#030711 55%,transparent 100%);
-  z-index:10;
-  pointer-events:none;
+/* Override Spline web-component host shadow bg */
+.hero-right spline-viewer{
+  --spline-background:#030711 !important;
+  background-color:#030711 !important;
 }
-
-/* Fade gradient — left edge bleeds into theme background */
+.spline-watermark-cover{
+  position:absolute;bottom:0;right:0;
+  width:230px;height:56px;
+  background:linear-gradient(to left,#030711 55%,transparent 100%);
+  z-index:10;pointer-events:none;
+}
+/* Left bleed */
 .hero-right::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  left:-2px;
+  content:'';position:absolute;inset:0;left:-2px;
   width:120px;
   background:linear-gradient(to right,#030711 0%,transparent 100%);
-  z-index:3;
-  pointer-events:none;
+  z-index:3;pointer-events:none;
 }
-
-/* Bottom vignette on the Spline so it doesn't hard-cut */
+/* Bottom vignette */
 .hero-right::after{
-  content:'';
-  position:absolute;
-  bottom:0;left:0;right:0;
-  height:80px;
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:80px;
   background:linear-gradient(to top,#030711 0%,transparent 100%);
-  z-index:3;
-  pointer-events:none;
+  z-index:3;pointer-events:none;
 }
-
-/* Floating stat cards — bottom-left of hero */
 .hero-stats{
-  position:absolute;
-  bottom:2.5rem;
+  position:absolute;bottom:2.5rem;
   left:clamp(2rem,6vw,5rem);
-  z-index:5;
-  display:flex;
-  gap:.85rem;
-  flex-wrap:wrap;
+  z-index:5;display:flex;gap:.85rem;flex-wrap:wrap;
   opacity:0;animation:fadeUp .8s 1.3s forwards;
 }
-
 .stat-pill{
   background:rgba(10,17,32,.72);
   border:1px solid rgba(124,58,237,.28);
   backdrop-filter:blur(20px) saturate(180%);
-  border-radius:10px;
-  padding:.65rem 1.1rem;
+  border-radius:10px;padding:.65rem 1.1rem;
   display:flex;flex-direction:column;
   position:relative;overflow:hidden;
 }
 .stat-pill::before{
-  content:'';
-  position:absolute;top:0;left:0;right:0;height:1px;
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,var(--p),var(--c));
 }
 .stat-pill .sn{
@@ -410,8 +365,6 @@ nav.scrolled{
   background:linear-gradient(135deg,var(--p2),var(--c2));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
-
-/* REVEALS */
 .rv{opacity:0;transform:translateY(32px);transition:opacity .75s ease,transform .75s ease}
 .rv.in{opacity:1;transform:none}
 .rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}.rv.d4{transition-delay:.4s}
@@ -451,45 +404,297 @@ nav.scrolled{
 }
 
 /* ══════════════════════════════════════════
-   SKILLS
+   STAGE 2: 3D BENTO GRID SKILLS
 ══════════════════════════════════════════ */
-.skills-cats{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:2.5rem}
-.cat-tab{
-  padding:.4rem 1.1rem;border-radius:20px;cursor:none;
-  font-family:'JetBrains Mono',monospace;font-size:.72rem;
-  letter-spacing:.06em;text-transform:uppercase;
-  border:1px solid var(--glass-border);color:var(--muted2);
-  background:transparent;transition:var(--ease);
+#skills{
+  position:relative;z-index:1;
+  padding:clamp(5rem,10vw,8rem) clamp(1.5rem,5vw,4rem);
+  overflow:hidden;
 }
-.cat-tab.act,.cat-tab:hover{
-  color:var(--p2);border-color:var(--p);
-  background:rgba(124,58,237,.1);
-  box-shadow:0 0 16px rgba(124,58,237,.1);
+
+/* Ambient glow bg for section */
+#skills::before{
+  content:'';position:absolute;
+  top:10%;left:20%;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,58,237,.07) 0%,transparent 70%);
+  pointer-events:none;
 }
-.skills-panel{display:none;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:1.75rem}
-.skills-panel.active{display:grid}
-.ring-wrap{
-  display:flex;flex-direction:column;align-items:center;gap:.75rem;
-  background:var(--glass-bg);border:1px solid var(--glass-border);
-  border-radius:var(--r);padding:1.5rem 1rem;
-  backdrop-filter:blur(12px);
+#skills::after{
+  content:'';position:absolute;
+  bottom:5%;right:10%;
+  width:500px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(6,182,212,.05) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+/* ── BENTO GRID LAYOUT ── */
+.bento-grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  grid-template-rows:auto;
+  gap:1rem;
+  max-width:1200px;
+  margin:0 auto;
+}
+
+/* ── BASE BENTO CARD ── */
+.bento-card{
+  position:relative;
+  border-radius:20px;
+  overflow:hidden;
+  border:1px solid rgba(124,58,237,.15);
+  background:rgba(10,17,32,.6);
+  backdrop-filter:blur(20px) saturate(180%);
+  padding:1.75rem;
+  cursor:default;
+  transform-style:preserve-3d;
+  transition:transform .4s cubic-bezier(.23,1,.32,1),
+             border-color .35s,
+             box-shadow .35s;
+  opacity:0;
+  transform:translateY(40px) scale(.97);
+  will-change:transform,opacity;
+}
+.bento-card.bento-in{
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+.bento-card::before{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,transparent 60%);
+  pointer-events:none;z-index:1;
+}
+/* top edge shine */
+.bento-card::after{
+  content:'';
+  position:absolute;top:0;left:10%;right:10%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);
+  pointer-events:none;z-index:2;
+}
+.bento-card:hover{
+  border-color:rgba(124,58,237,.4);
+  box-shadow:
+    0 0 0 1px rgba(124,58,237,.12),
+    0 20px 60px rgba(0,0,0,.5),
+    0 0 80px rgba(124,58,237,.08);
+}
+
+/* ── GRID PLACEMENTS ── */
+/* Hero card — Python — spans 5 cols, 2 rows */
+.bc-hero{
+  grid-column:1/6;
+  grid-row:1/3;
+  min-height:340px;
+  background:rgba(8,12,28,.75);
+  border-color:rgba(124,58,237,.25);
+}
+/* ROS2 — wide horizontal */
+.bc-ros{
+  grid-column:6/13;
+  grid-row:1/2;
+  min-height:160px;
+}
+/* C++ */
+.bc-cpp{
+  grid-column:6/9;
+  grid-row:2/3;
+  min-height:160px;
+}
+/* Electronics */
+.bc-elec{
+  grid-column:9/13;
+  grid-row:2/3;
+  min-height:160px;
+}
+/* CAD — full width bottom row */
+.bc-cad{
+  grid-column:1/7;
+  grid-row:3/4;
+  min-height:160px;
+}
+/* Tools cloud */
+.bc-tools{
+  grid-column:7/13;
+  grid-row:3/4;
+  min-height:160px;
+}
+
+/* ── CARD CONTENT ELEMENTS ── */
+.bento-icon{
+  font-size:2rem;margin-bottom:1rem;
+  display:block;line-height:1;
+  position:relative;z-index:3;
+}
+.bento-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.68rem;color:var(--c);
+  letter-spacing:.15em;text-transform:uppercase;
+  margin-bottom:.4rem;position:relative;z-index:3;
+}
+.bento-title{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:1.5rem;line-height:1.15;
+  margin-bottom:.6rem;position:relative;z-index:3;
+}
+.bento-desc{
+  font-size:.88rem;color:var(--muted2);
+  line-height:1.7;position:relative;z-index:3;
+  max-width:320px;
+}
+.bento-pct{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:3.5rem;line-height:1;
+  background:linear-gradient(135deg,var(--p2),var(--c2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  position:absolute;bottom:1.5rem;right:1.75rem;
+  z-index:3;opacity:.35;
+}
+
+/* ── PROGRESS BAR ── */
+.bento-bar-wrap{
+  margin-top:1.2rem;position:relative;z-index:3;
+}
+.bento-bar-row{
+  display:flex;justify-content:space-between;
+  font-family:'JetBrains Mono',monospace;font-size:.68rem;
+  color:var(--muted);margin-bottom:.3rem;
+}
+.bento-bar-track{
+  height:4px;background:rgba(255,255,255,.07);
+  border-radius:2px;overflow:hidden;
+}
+.bento-bar-fill{
+  height:100%;border-radius:2px;width:0;
+  transition:width 1.4s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── HERO CARD: CODE RAIN CANVAS ── */
+.code-rain-canvas{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  opacity:.18;pointer-events:none;z-index:0;
+}
+
+/* ── ACCENT GLOW blob on hero card ── */
+.bc-hero .blob{
+  position:absolute;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,58,237,.3) 0%,transparent 70%);
+  bottom:-40px;right:-40px;
+  pointer-events:none;z-index:0;
+  animation:pulse-glow 3s ease-in-out infinite;
+}
+
+/* ── SKILL TAGS ── */
+.skill-tags{
+  display:flex;flex-wrap:wrap;gap:.4rem;
+  margin-top:1rem;position:relative;z-index:3;
+}
+.skill-tag{
+  font-family:'JetBrains Mono',monospace;font-size:.67rem;
+  padding:.22rem .65rem;border-radius:6px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  color:var(--muted2);
+  transition:var(--ease);
+}
+.skill-tag:hover{
+  background:rgba(124,58,237,.15);
+  border-color:rgba(124,58,237,.35);
+  color:var(--p2);transform:translateY(-2px);
+}
+
+/* ── ICON ROW ── */
+.icon-row{
+  display:flex;gap:.75rem;align-items:center;
+  margin-top:auto;padding-top:1.25rem;
+  position:relative;z-index:3;
+}
+.icon-blob{
+  width:40px;height:40px;border-radius:10px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;transition:var(--ease);
+  flex-shrink:0;
+}
+.icon-blob:hover{
+  background:rgba(124,58,237,.2);
+  border-color:rgba(124,58,237,.4);
+  transform:translateY(-3px) scale(1.08);
+}
+
+/* ── TOOLS CLOUD ── */
+.tools-grid{
+  display:flex;flex-wrap:wrap;gap:.5rem;
+  position:relative;z-index:3;
+  margin-top:.75rem;
+}
+.tool-pill{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  padding:.3rem .85rem;border-radius:20px;
+  background:rgba(6,182,212,.07);
+  border:1px solid rgba(6,182,212,.2);
+  color:var(--c2);
   transition:var(--ease);cursor:default;
 }
-.ring-wrap:hover{
-  border-color:var(--p);transform:translateY(-4px);
-  box-shadow:var(--d3),0 0 0 1px rgba(124,58,237,.15);
+.tool-pill:hover{
+  background:rgba(6,182,212,.18);
+  transform:translateY(-2px) scale(1.04);
+  box-shadow:0 4px 14px rgba(6,182,212,.15);
 }
-.ring-svg{width:90px;height:90px;transform:rotate(-90deg)}
-.ring-bg{fill:none;stroke:rgba(255,255,255,.06);stroke-width:6}
-.ring-fill{fill:none;stroke-width:6;stroke-linecap:round;stroke-dasharray:0 283;transition:stroke-dasharray 1.4s cubic-bezier(.4,0,.2,1)}
-.ring-center{
-  font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;
-  fill:var(--text);text-anchor:middle;dominant-baseline:central;
-  transform:rotate(90deg);transform-origin:50px 50px;
+
+/* ── ACCENT LINES ── */
+.accent-line{
+  position:absolute;
+  pointer-events:none;z-index:0;
 }
-.ring-name{font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--text);text-align:center;font-weight:500}
-.tag-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:2rem}
-.stag{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted2);padding:.25rem .65rem;border-radius:4px;background:rgba(255,255,255,.04);border:1px solid var(--border)}
+
+/* ── PROFICIENCY RING (mini) ── */
+.mini-ring-wrap{
+  position:absolute;bottom:1.5rem;right:1.75rem;
+  z-index:3;
+}
+.mini-ring-svg{
+  width:56px;height:56px;
+  transform:rotate(-90deg);
+}
+.mini-ring-bg{fill:none;stroke:rgba(255,255,255,.07);stroke-width:5}
+.mini-ring-fill{fill:none;stroke-width:5;stroke-linecap:round;stroke-dasharray:0 176;transition:stroke-dasharray 1.6s cubic-bezier(.4,0,.2,1)}
+.mini-ring-label{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Syne',sans-serif;font-weight:700;font-size:.72rem;
+  color:var(--text);white-space:nowrap;
+}
+
+/* ── FLOATING BADGE ── */
+.float-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-family:'JetBrains Mono',monospace;font-size:.65rem;
+  color:var(--green);letter-spacing:.1em;
+  background:rgba(16,185,129,.08);
+  border:1px solid rgba(16,185,129,.2);
+  border-radius:20px;padding:.25rem .75rem;
+  position:absolute;top:1.5rem;right:1.5rem;
+  z-index:4;
+}
+.float-badge::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 6px var(--green);
+  animation:pulse-glow 1.5s ease-in-out infinite;
+}
+
+/* ── ROS card special: circuit trace bg ── */
+.circuit-trace{
+  position:absolute;inset:0;z-index:0;
+  opacity:.07;pointer-events:none;
+  overflow:hidden;
+}
+
+/* ── CARD 3D on hover via JS ── */
 
 /* ══════════════════════════════════════════
    PROJECTS
@@ -734,12 +939,24 @@ footer .grad-text{
 /* ══════════════════════════════════════════
    RESPONSIVE
 ══════════════════════════════════════════ */
+@media(max-width:1024px){
+  .bc-hero{grid-column:1/7}
+  .bc-ros{grid-column:7/13}
+  .bc-cpp{grid-column:1/7}
+  .bc-elec{grid-column:7/13}
+  .bc-cad{grid-column:1/7}
+  .bc-tools{grid-column:7/13}
+}
+@media(max-width:760px){
+  .bento-grid{grid-template-columns:1fr}
+  .bc-hero,.bc-ros,.bc-cpp,.bc-elec,.bc-cad,.bc-tools{
+    grid-column:1/-1;grid-row:auto;min-height:auto;
+  }
+}
 @media(max-width:900px){
   .hero-cols{flex-direction:column}
   .hero-right{
-    min-height:380px;
-    width:100%;
-    flex:none;
+    min-height:380px;width:100%;flex:none;
   }
   .hero-right::before{
     width:100%;height:60px;top:0;left:0;
@@ -763,11 +980,8 @@ footer .grad-text{
 </head>
 <body>
 
-<!-- Cursor -->
 <div id="cursor-ring"></div>
 <div id="cursor-dot"></div>
-
-<!-- Neural canvas (background particle field) -->
 <canvas id="neural-canvas"></canvas>
 
 <!-- Nav -->
@@ -813,16 +1027,12 @@ footer .grad-text{
   </div>
 </div>
 
-<!-- ════════════ HERO — STAGE 1: SPLINE ROBOT ════════════ -->
+<!-- ═══════════════════ HERO ═══════════════════ -->
 <section id="hero">
   <div class="hero-card">
-
-    <!-- Aceternity-style spotlight -->
     <svg class="spotlight-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3787 2842" fill="none">
       <g filter="url(#sf)">
-        <ellipse
-          cx="1924.71" cy="273.501"
-          rx="1924.71" ry="273.501"
+        <ellipse cx="1924.71" cy="273.501" rx="1924.71" ry="273.501"
           transform="matrix(-0.822377 -0.568943 -0.568943 0.822377 3631.88 2291.09)"
           fill="white" fill-opacity="0.18"/>
       </g>
@@ -835,11 +1045,7 @@ footer .grad-text{
         </filter>
       </defs>
     </svg>
-
-    <!-- Two-column layout -->
     <div class="hero-cols">
-
-      <!-- LEFT: text content -->
       <div class="hero-left">
         <div class="hero-badge">// Mechatronics Engineering</div>
         <h1 class="hero-name">Kevin <span class="grad">Stev</span><br>Bayer</h1>
@@ -856,30 +1062,25 @@ footer .grad-text{
           <a href="#contact"  class="btn-ghost">Get In Touch →</a>
         </div>
         <div class="hero-social" id="hero-social"></div>
-
-        <!-- Stats sit at the bottom of the left column on desktop -->
-        <div class="hero-stats" id="hero-stats" style="position:static;margin-top:2.5rem;padding:0;animation:fadeUp .8s 1.3s forwards;opacity:0;"></div>
+        <div id="hero-stats" style="display:flex;gap:.85rem;flex-wrap:wrap;margin-top:2.5rem;opacity:0;animation:fadeUp .8s 1.3s forwards;"></div>
       </div>
 
-      <!-- RIGHT: Spline 3D robot -->
+      <!-- ─── SPLINE: bg matched to --bg so the grey box blends ─── -->
       <div class="hero-right" id="hero-right">
-        <!-- spline-viewer web component — loads the robot scene -->
         <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.96/build/spline-viewer.js"></script>
         <spline-viewer
           id="spline-scene"
           url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-          style="width:100%;height:100%;background:transparent;"
+          style="width:100%;height:100%;background:transparent;--background:#030711;"
           loading-anim-type="none"
         ></spline-viewer>
-        <!-- Hard cover over the "Built with Spline" badge in the bottom-right -->
         <div class="spline-watermark-cover" aria-hidden="true"></div>
       </div>
-
-    </div><!-- /hero-cols -->
-  </div><!-- /hero-card -->
+    </div>
+  </div>
 </section>
 
-<!-- ════════════ ABOUT ════════════ -->
+<!-- ═══════════════════ ABOUT ═══════════════════ -->
 <section class="section section-alt" id="about">
   <div class="section-inner">
     <div class="chip">01 // About Me</div>
@@ -946,17 +1147,180 @@ footer .grad-text{
   </div>
 </section>
 
-<!-- ════════════ SKILLS ════════════ -->
-<section class="section" id="skills">
+<!-- ═══════════════════ STAGE 2: SKILLS — 3D BENTO GRID ═══════════════════ -->
+<section id="skills">
   <div class="section-inner">
     <div class="chip">02 // Skills</div>
     <div class="sh">My Technical <em>Toolkit</em></div>
-    <div class="skills-cats" id="skills-cats"></div>
-    <div id="skills-panels"></div>
+
+    <div class="bento-grid" id="bento-grid">
+
+      <!-- ── HERO CARD: Python ── -->
+      <div class="bento-card bc-hero" id="bc-python" style="transition-delay:.05s">
+        <canvas class="code-rain-canvas" id="codeRainCanvas"></canvas>
+        <div class="blob"></div>
+        <div class="float-badge">Primary Language</div>
+        <div style="position:relative;z-index:3">
+          <div class="bento-label">Programming</div>
+          <div class="bento-title" style="font-size:2rem;background:linear-gradient(135deg,#a78bfa,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Python</div>
+          <div class="bento-desc">Writing automation scripts, sensor pipelines, and robotics algorithms. NumPy, OpenCV, and Matplotlib are daily tools.</div>
+        </div>
+        <div class="bento-bar-wrap">
+          <div class="bento-bar-row"><span>Proficiency</span><span style="color:var(--p2)">90%</span></div>
+          <div class="bento-bar-track">
+            <div class="bento-bar-fill" data-w="90" style="background:linear-gradient(90deg,var(--p),var(--c))"></div>
+          </div>
+        </div>
+        <div class="skill-tags" style="margin-top:1.25rem">
+          <span class="skill-tag">NumPy</span>
+          <span class="skill-tag">OpenCV</span>
+          <span class="skill-tag">Matplotlib</span>
+          <span class="skill-tag">serial</span>
+          <span class="skill-tag">asyncio</span>
+        </div>
+        <!-- Live code snippet -->
+        <div style="position:relative;z-index:3;margin-top:1.25rem;padding:1rem;background:rgba(0,0,0,.4);border-radius:10px;border:1px solid rgba(124,58,237,.2);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted2);line-height:1.7">
+          <span style="color:#f59e0b">import</span> <span style="color:#67e8f9">rclpy</span><br>
+          <span style="color:#f59e0b">from</span> <span style="color:#67e8f9">sensor_msgs.msg</span> <span style="color:#f59e0b">import</span> LaserScan<br>
+          <span style="color:#a78bfa">def</span> <span style="color:#10b981">scan_callback</span>(msg):<br>
+          &nbsp;&nbsp;<span style="color:#94a3b8">ranges = msg.ranges</span>
+        </div>
+      </div>
+
+      <!-- ── ROS2 ── -->
+      <div class="bento-card bc-ros" id="bc-ros" style="transition-delay:.12s">
+        <!-- Circuit trace SVG bg -->
+        <svg class="circuit-trace" viewBox="0 0 600 160" preserveAspectRatio="xMidYMid slice">
+          <path d="M0 80 H80 V40 H160 V80 H240 V120 H320 V80 H400 V40 H480 V80 H600" stroke="#06b6d4" stroke-width="1" fill="none"/>
+          <path d="M80 40 V10 M160 80 V110 M320 80 V50 M480 80 V110" stroke="#06b6d4" stroke-width="1" fill="none"/>
+          <circle cx="80" cy="40" r="4" fill="#06b6d4"/>
+          <circle cx="160" cy="80" r="4" fill="#06b6d4"/>
+          <circle cx="320" cy="80" r="4" fill="#06b6d4"/>
+          <circle cx="480" cy="80" r="4" fill="#06b6d4"/>
+        </svg>
+        <div class="bento-label" style="color:var(--c)">Robotics Middleware</div>
+        <div class="bento-title">ROS2 / Gazebo</div>
+        <div class="bento-desc" style="max-width:none">Nodes, topics, services, transforms (tf2), and simulation pipelines. Building towards full autonomous navigation stacks.</div>
+        <div class="bento-bar-wrap" style="margin-top:.9rem">
+          <div class="bento-bar-row"><span>ROS2</span><span style="color:var(--c)">40%</span></div>
+          <div class="bento-bar-track" style="margin-bottom:.6rem">
+            <div class="bento-bar-fill" data-w="40" style="background:linear-gradient(90deg,var(--c),#22d3ee)"></div>
+          </div>
+          <div class="bento-bar-row"><span>Gazebo</span><span style="color:var(--c)">30%</span></div>
+          <div class="bento-bar-track">
+            <div class="bento-bar-fill" data-w="30" style="background:linear-gradient(90deg,var(--c),#22d3ee)"></div>
+          </div>
+        </div>
+        <div class="icon-row">
+          <div class="icon-blob" title="ROS2">🤖</div>
+          <div class="icon-blob" title="Gazebo">🌐</div>
+          <div class="icon-blob" title="RVIZ">📡</div>
+          <div class="icon-blob" title="Nav2">🗺️</div>
+        </div>
+      </div>
+
+      <!-- ── C++ ── -->
+      <div class="bento-card bc-cpp" id="bc-cpp" style="transition-delay:.18s;background:rgba(12,8,28,.7);border-color:rgba(167,139,250,.2)">
+        <div class="bento-label" style="color:var(--p2)">Systems Programming</div>
+        <div class="bento-title" style="background:linear-gradient(135deg,#c084fc,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">C++</div>
+        <div class="bento-desc">Low-level hardware interfaces, firmware for embedded targets, and performance-critical robotics nodes.</div>
+        <div class="mini-ring-wrap">
+          <svg class="mini-ring-svg" viewBox="0 0 56 56">
+            <circle class="mini-ring-bg" cx="28" cy="28" r="24"/>
+            <circle class="mini-ring-fill" cx="28" cy="28" r="24" stroke="#a78bfa" data-w="50"/>
+          </svg>
+          <div class="mini-ring-label" style="color:var(--p2)">50%</div>
+        </div>
+        <div class="skill-tags" style="margin-top:.9rem">
+          <span class="skill-tag" style="border-color:rgba(167,139,250,.2);color:var(--p2)">STL</span>
+          <span class="skill-tag" style="border-color:rgba(167,139,250,.2);color:var(--p2)">Pointers</span>
+          <span class="skill-tag" style="border-color:rgba(167,139,250,.2);color:var(--p2)">OOP</span>
+          <span class="skill-tag" style="border-color:rgba(167,139,250,.2);color:var(--p2)">CMake</span>
+        </div>
+      </div>
+
+      <!-- ── Electronics ── -->
+      <div class="bento-card bc-elec" id="bc-elec" style="transition-delay:.22s;background:rgba(12,18,8,.7);border-color:rgba(16,185,129,.2)">
+        <div class="bento-label" style="color:var(--green)">Embedded & Electronics</div>
+        <div class="bento-title" style="background:linear-gradient(135deg,#10b981,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Hardware</div>
+        <div class="bento-desc">Arduino/AVR microcontrollers, Raspberry Pi single-board computers, sensor integration, and motor drivers.</div>
+        <div class="mini-ring-wrap">
+          <svg class="mini-ring-svg" viewBox="0 0 56 56">
+            <circle class="mini-ring-bg" cx="28" cy="28" r="24"/>
+            <circle class="mini-ring-fill" cx="28" cy="28" r="24" stroke="#10b981" data-w="70"/>
+          </svg>
+          <div class="mini-ring-label" style="color:var(--green)">70%</div>
+        </div>
+        <div class="icon-row" style="padding-top:.75rem">
+          <div class="icon-blob" style="border-color:rgba(16,185,129,.2)">🔧</div>
+          <div class="icon-blob" style="border-color:rgba(16,185,129,.2)">⚡</div>
+          <div class="icon-blob" style="border-color:rgba(16,185,129,.2)">📟</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted);margin-left:.3rem">I2C · SPI · UART · PWM</div>
+        </div>
+      </div>
+
+      <!-- ── CAD / Design ── -->
+      <div class="bento-card bc-cad" id="bc-cad" style="transition-delay:.28s;background:rgba(18,14,4,.7);border-color:rgba(245,158,11,.18)">
+        <div class="bento-label" style="color:var(--hot)">Mechanical Design</div>
+        <div class="bento-title" style="background:linear-gradient(135deg,#f59e0b,#fcd34d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">CAD & 3D Print</div>
+        <div class="bento-desc" style="max-width:none">SolidWorks for part design and assemblies. Comfortable with FDM printing for rapid robot prototypes and mechanical fixtures.</div>
+        <div class="bento-bar-wrap" style="margin-top:1rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem 2rem">
+            <div>
+              <div class="bento-bar-row"><span>SolidWorks</span><span style="color:var(--hot)">55%</span></div>
+              <div class="bento-bar-track"><div class="bento-bar-fill" data-w="55" style="background:linear-gradient(90deg,var(--hot),#fcd34d)"></div></div>
+            </div>
+            <div>
+              <div class="bento-bar-row"><span>AutoCAD</span><span style="color:var(--hot)">45%</span></div>
+              <div class="bento-bar-track"><div class="bento-bar-fill" data-w="45" style="background:linear-gradient(90deg,var(--hot),#fcd34d)"></div></div>
+            </div>
+            <div>
+              <div class="bento-bar-row"><span>3D Printing</span><span style="color:var(--hot)">60%</span></div>
+              <div class="bento-bar-track"><div class="bento-bar-fill" data-w="60" style="background:linear-gradient(90deg,var(--hot),#fcd34d)"></div></div>
+            </div>
+            <div>
+              <div class="bento-bar-row"><span>Mechanism</span><span style="color:var(--hot)">50%</span></div>
+              <div class="bento-bar-track"><div class="bento-bar-fill" data-w="50" style="background:linear-gradient(90deg,var(--hot),#fcd34d)"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="skill-tags" style="margin-top:1rem">
+          <span class="skill-tag" style="border-color:rgba(245,158,11,.2);color:#f59e0b">FDM Printing</span>
+          <span class="skill-tag" style="border-color:rgba(245,158,11,.2);color:#f59e0b">Laser Cutting</span>
+          <span class="skill-tag" style="border-color:rgba(245,158,11,.2);color:#f59e0b">GD&T</span>
+          <span class="skill-tag" style="border-color:rgba(245,158,11,.2);color:#f59e0b">Assembly</span>
+        </div>
+      </div>
+
+      <!-- ── Tools Cloud ── -->
+      <div class="bento-card bc-tools" id="bc-tools" style="transition-delay:.34s">
+        <div class="bento-label">Dev Tools & Extras</div>
+        <div class="bento-title" style="font-size:1.25rem;margin-bottom:.9rem">Full Stack of Tools</div>
+        <div class="tools-grid">
+          <span class="tool-pill">Git</span>
+          <span class="tool-pill">VS Code</span>
+          <span class="tool-pill">Linux</span>
+          <span class="tool-pill">MATLAB</span>
+          <span class="tool-pill">Simulink</span>
+          <span class="tool-pill">Bash</span>
+          <span class="tool-pill">Docker</span>
+          <span class="tool-pill">GitHub</span>
+          <span class="tool-pill">URDF</span>
+          <span class="tool-pill">rviz2</span>
+          <span class="tool-pill">roslaunch</span>
+          <span class="tool-pill">tf2</span>
+          <span class="tool-pill">rosserial</span>
+          <span class="tool-pill">L298N</span>
+          <span class="tool-pill">HC-SR04</span>
+          <span class="tool-pill">MPU6050</span>
+        </div>
+      </div>
+
+    </div><!-- /bento-grid -->
   </div>
 </section>
 
-<!-- ════════════ PROJECTS ════════════ -->
+<!-- ═══════════════════ PROJECTS ═══════════════════ -->
 <section class="section section-alt" id="projects">
   <div class="section-inner">
     <div class="chip">03 // Projects</div>
@@ -966,7 +1330,7 @@ footer .grad-text{
   </div>
 </section>
 
-<!-- ════════════ EXPERIENCE ════════════ -->
+<!-- ═══════════════════ EXPERIENCE ═══════════════════ -->
 <section class="section" id="experience">
   <div class="section-inner">
     <div class="chip">04 // Journey</div>
@@ -975,7 +1339,7 @@ footer .grad-text{
   </div>
 </section>
 
-<!-- ════════════ EDUCATION ════════════ -->
+<!-- ═══════════════════ EDUCATION ═══════════════════ -->
 <section class="section section-alt" id="education">
   <div class="section-inner">
     <div class="chip">05 // Education</div>
@@ -984,7 +1348,7 @@ footer .grad-text{
   </div>
 </section>
 
-<!-- ════════════ CERTIFICATIONS ════════════ -->
+<!-- ═══════════════════ CERTIFICATIONS ═══════════════════ -->
 <section class="section" id="certifications">
   <div class="section-inner">
     <div class="chip">06 // Certifications</div>
@@ -993,7 +1357,7 @@ footer .grad-text{
   </div>
 </section>
 
-<!-- ════════════ CONTACT ════════════ -->
+<!-- ═══════════════════ CONTACT ═══════════════════ -->
 <section class="section section-alt" id="contact">
   <div class="section-inner">
     <div class="chip">07 // Contact</div>
@@ -1078,48 +1442,6 @@ const DATA = {
     { n:"8+", l:"Tools Learned"  },
     { n:"3",  l:"Competitions"   },
   ],
-  skills: [
-    {
-      cat:"Programming", color:"#7c3aed",
-      items:[
-        {name:"Python",    pct:90},
-        {name:"C++",       pct:50},
-        {name:"MATLAB",    pct:20},
-        {name:"Bash/Shell",pct:45},
-      ],
-      tags:["NumPy","OpenCV","Matplotlib","Git","VS Code"],
-    },
-    {
-      cat:"Robotics", color:"#06b6d4",
-      items:[
-        {name:"ROS/ROS2",  pct:40},
-        {name:"Gazebo",    pct:30},
-        {name:"Arduino",   pct:65},
-        {name:"Simulink",  pct:35},
-      ],
-      tags:["URDF","rviz","roslaunch","tf2","rosserial"],
-    },
-    {
-      cat:"Electronics", color:"#f59e0b",
-      items:[
-        {name:"Arduino/AVR",   pct:70},
-        {name:"Raspberry Pi",  pct:60},
-        {name:"Circuit Design",pct:55},
-        {name:"Sensors",       pct:60},
-      ],
-      tags:["I2C","SPI","UART","PWM","L298N","HC-SR04"],
-    },
-    {
-      cat:"CAD / Design", color:"#10b981",
-      items:[
-        {name:"SolidWorks",pct:55},
-        {name:"AutoCAD",   pct:45},
-        {name:"3D Printing",pct:60},
-        {name:"Mechanism", pct:50},
-      ],
-      tags:["FDM Printing","Laser Cutting","GD&T","Assembly"],
-    },
-  ],
   projects: [
     {
       id:"p1", title:"Your Project Title", cat:"Robotics",
@@ -1183,7 +1505,7 @@ const ring=document.getElementById('cursor-ring'),dot=document.getElementById('c
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
 (function animCursor(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animCursor)})();
-document.querySelectorAll('a,button,.proj-card,.cert-card,.ring-wrap,.tech-chip').forEach(el=>{
+document.querySelectorAll('a,button,.proj-card,.cert-card,.bento-card,.tool-pill,.skill-tag,.icon-blob').forEach(el=>{
   el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
   el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
 });
@@ -1191,7 +1513,7 @@ document.addEventListener('mousedown',()=>document.body.classList.add('clicking'
 document.addEventListener('mouseup',()=>document.body.classList.remove('clicking'));
 
 /* ══════════════════════════════════════════
-   NEURAL CANVAS (2D background)
+   NEURAL CANVAS
 ══════════════════════════════════════════ */
 (function initCanvas(){
   const cv=document.getElementById('neural-canvas');
@@ -1241,6 +1563,36 @@ document.addEventListener('mouseup',()=>document.body.classList.remove('clicking
 })();
 
 /* ══════════════════════════════════════════
+   CODE RAIN CANVAS (Python hero card)
+══════════════════════════════════════════ */
+(function initCodeRain(){
+  const cv=document.getElementById('codeRainCanvas');
+  if(!cv)return;
+  const ctx=cv.getContext('2d');
+  const chars='01 import numpy as np def class return for while if else ros rclpy tf2 gazebo cmake urdf msg'.split(' ');
+  let drops=[];
+  function resize(){
+    cv.width=cv.offsetWidth;cv.height=cv.offsetHeight;
+    drops=Array.from({length:Math.floor(cv.width/22)},()=>Math.random()*cv.height);
+  }
+  resize();
+  window.addEventListener('resize',resize);
+  function draw(){
+    ctx.fillStyle='rgba(8,12,28,.08)';
+    ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.font='12px "JetBrains Mono",monospace';
+    drops.forEach((y,i)=>{
+      const c=chars[Math.floor(Math.random()*chars.length)];
+      const alpha=Math.random()*.5+.1;
+      ctx.fillStyle=`rgba(124,58,237,${alpha})`;
+      ctx.fillText(c,i*22,y);
+      drops[i]=y>cv.height&&Math.random()>.97?0:y+14;
+    });
+  }
+  setInterval(draw,80);
+})();
+
+/* ══════════════════════════════════════════
    TYPEWRITER
 ══════════════════════════════════════════ */
 (function(){
@@ -1260,14 +1612,10 @@ document.addEventListener('mouseup',()=>document.body.classList.remove('clicking
    HERO FILLS
 ══════════════════════════════════════════ */
 document.getElementById('nav-cv').href=DATA.cvFile;
-
-// Stats
 const statsEl=document.getElementById('hero-stats');
 DATA.stats.forEach(s=>{
   statsEl.innerHTML+=`<div class="stat-pill"><div class="sn">${s.n}</div><div class="sl">${s.l}</div></div>`;
 });
-
-// Social icons
 const socialEl=document.getElementById('hero-social');
 const ICONS={
   github:`<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>`,
@@ -1279,67 +1627,66 @@ const ICONS={
 });
 
 /* ══════════════════════════════════════════
-   SKILLS
+   STAGE 2: BENTO GRID ANIMATIONS
 ══════════════════════════════════════════ */
-const catsEl=document.getElementById('skills-cats');
-const panelsEl=document.getElementById('skills-panels');
-DATA.skills.forEach((sk,i)=>{
-  const tab=document.createElement('button');
-  tab.className='cat-tab'+(i===0?' act':'');
-  tab.textContent=sk.cat;tab.dataset.i=i;
-  tab.onclick=()=>{
-    document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('act'));
-    document.querySelectorAll('.skills-panel').forEach(p=>p.classList.remove('active'));
-    tab.classList.add('act');
-    const panel=document.getElementById(`sp-${i}`);
-    panel.classList.add('active');
-    setTimeout(()=>panel.querySelectorAll('.ring-fill').forEach(f=>{
-      f.style.strokeDasharray=`${parseFloat(f.dataset.pct)*2.827} 283`;
-    }),50);
-  };
-  catsEl.appendChild(tab);
-  const panel=document.createElement('div');
-  panel.className='skills-panel rv'+(i===0?' active':'');
-  panel.id=`sp-${i}`;
-  sk.items.forEach(item=>{
-    panel.innerHTML+=`
-    <div class="ring-wrap">
-      <svg class="ring-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <circle class="ring-bg" cx="50" cy="50" r="45"/>
-        <circle class="ring-fill" cx="50" cy="50" r="45"
-          stroke="${sk.color}" data-pct="${item.pct}"
-          style="stroke-dasharray:0 283"/>
-        <text class="ring-center" x="50" y="50" fill="${sk.color}"
-          font-family="Syne,sans-serif" font-weight="700" font-size="16"
-          text-anchor="middle" dominant-baseline="central"
-          transform="rotate(90,50,50)">${item.pct}%</text>
-      </svg>
-      <div class="ring-name">${item.name}</div>
-    </div>`;
+
+/* ── 3D Tilt on hover ── */
+document.querySelectorAll('.bento-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5;
+    const y=(e.clientY-r.top)/r.height-.5;
+    const intensity=8;
+    card.style.transform=`perspective(900px) rotateX(${-y*intensity}deg) rotateY(${x*intensity}deg) translateZ(10px) scale(1.01)`;
+    // Shift the highlight glare
+    card.style.setProperty('--mx',`${(e.clientX-r.left).toFixed(0)}px`);
+    card.style.setProperty('--my',`${(e.clientY-r.top).toFixed(0)}px`);
   });
-  if(sk.tags)panel.innerHTML+=`<div class="tag-row" style="grid-column:1/-1">${sk.tags.map(t=>`<span class="stag">${t}</span>`).join('')}</div>`;
-  panelsEl.appendChild(panel);
+  card.addEventListener('mouseleave',()=>{
+    card.style.transform='perspective(900px) rotateX(0) rotateY(0) translateZ(0) scale(1)';
+  });
 });
 
-/* ══════════════════════════════════════════
-   SCROLL REVEAL
-══════════════════════════════════════════ */
-const io=new IntersectionObserver(entries=>{
+/* ── IntersectionObserver: fade-in + bar fill + mini ring ── */
+const bentoIO=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(!e.isIntersecting)return;
-    e.target.classList.add('in');
-    if(e.target.classList.contains('active')){
-      setTimeout(()=>e.target.querySelectorAll('.ring-fill').forEach(f=>{
-        f.style.strokeDasharray=`${parseFloat(f.dataset.pct)*2.827} 283`;
-      }),100);
-    }
-    io.unobserve(e.target);
+    const card=e.target;
+    card.classList.add('bento-in');
+    // Animate progress bars
+    setTimeout(()=>{
+      card.querySelectorAll('.bento-bar-fill').forEach(fill=>{
+        const w=parseFloat(fill.dataset.w)||0;
+        fill.style.width=w+'%';
+      });
+      // Animate mini rings
+      card.querySelectorAll('.mini-ring-fill').forEach(fill=>{
+        const pct=parseFloat(fill.dataset.w)||0;
+        // circumference for r=24: 2πr ≈ 150.8
+        const circ=150.8;
+        fill.style.strokeDasharray=`${(pct/100)*circ} ${circ}`;
+      });
+    },150);
+    bentoIO.unobserve(card);
   });
-},{threshold:.12});
+},{threshold:.15});
+
+document.querySelectorAll('.bento-card').forEach(c=>bentoIO.observe(c));
 
 /* ══════════════════════════════════════════
    PROJECTS
 ══════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   GENERAL SCROLL REVEAL (declared early — used by initProjects)
+══════════════════════════════════════════ */
+const generalIO=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    e.target.classList.add('in');
+    generalIO.unobserve(e.target);
+  });
+},{threshold:.12});
+
 function pSVG(color){
   const h=color.replace('#','');
   return`<svg viewBox="0 0 400 172" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
@@ -1397,7 +1744,7 @@ function initProjects(){
         <div class="proj-tags">${p.tags.map(t=>`<span class="pt">${t}</span>`).join('')}</div>
         <div class="proj-footer">
           <div style="display:flex;gap:1rem">
-            ${p.github&&p.github!='#'?`<a href="${p.github}" target="_blank" rel="noopener" class="proj-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg> Code</a>`:''}
+            ${p.github&&p.github!='#'?`<a href="${p.github}" target="_blank" rel="noopener" class="proj-link">Code</a>`:''}
           </div>
           <div class="proj-more" onclick="openModal(${pi})">Details →</div>
         </div>
@@ -1411,7 +1758,7 @@ function initProjects(){
     card.addEventListener('mouseleave',()=>{card.style.transform='perspective(800px) rotateY(0) rotateX(0) translateZ(0)'});
     gridEl.appendChild(card);
   });
-  document.querySelectorAll('.proj-card.rv').forEach(el=>io.observe(el));
+  document.querySelectorAll('.proj-card.rv').forEach(el=>generalIO.observe(el));
 }
 initProjects();
 
@@ -1515,11 +1862,12 @@ document.getElementById('contact-form').addEventListener('submit',async e=>{
   }finally{btn.disabled=false;btn.textContent='Send Message →';}
 });
 
-/* ══════════════════════════════════════════
-   OBSERVE + NAV
-══════════════════════════════════════════ */
-document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+/* Register all .rv elements with the already-declared generalIO */
+document.querySelectorAll('.rv').forEach(el=>generalIO.observe(el));
 
+/* ══════════════════════════════════════════
+   ACTIVE NAV + SCROLL
+══════════════════════════════════════════ */
 const sections=['hero','about','skills','projects','experience','education','contact'];
 const navAs=document.querySelectorAll('.nav-links a');
 const navEl=document.getElementById('nav');
@@ -1529,10 +1877,32 @@ window.addEventListener('scroll',()=>{
   navAs.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
   navEl.classList.toggle('scrolled',window.scrollY>20);
 },{passive:true});
-
 document.getElementById('ham').onclick=()=>document.getElementById('mob-nav').classList.toggle('open');
 function closeMob(){document.getElementById('mob-nav').classList.remove('open')}
 document.getElementById('yr').textContent=new Date().getFullYear();
+
+/* ══════════════════════════════════════════
+   SPLINE WATERMARK REMOVAL
+══════════════════════════════════════════ */
+(function killSplineBadge(){
+  const el=document.getElementById('spline-scene');
+  if(!el)return;
+  function tryHide(){
+    const root=el.shadowRoot;
+    if(!root)return;
+    const badge=root.querySelector('#logo');
+    if(badge){badge.style.display='none';return;}
+    const all=root.querySelectorAll('a[href*="spline"],div[id*="logo"],div[class*="logo"]');
+    all.forEach(n=>n.style.display='none');
+    // Also force canvas bg to match theme
+    const canvas=root.querySelector('canvas');
+    if(canvas){canvas.style.background='#030711';}
+  }
+  tryHide();
+  const t=setInterval(tryHide,200);
+  setTimeout(()=>clearInterval(t),8000);
+  el.addEventListener('load',()=>{tryHide();clearInterval(t);});
+})();
 
 /* ══════════════════════════════════════════
    SANITY CMS LIVE FETCH
@@ -1556,33 +1926,6 @@ document.getElementById('yr').textContent=new Date().getFullYear();
     }));
     initProjects();
   }catch(err){console.warn('Sanity fetch failed — using local data.',err);}
-})();
-
-/* ══════════════════════════════════════════
-   SPLINE WATERMARK REMOVAL
-   Polls the spline-viewer shadow root and hides
-   the #logo badge Spline injects into its canvas.
-══════════════════════════════════════════ */
-(function killSplineBadge(){
-  const el=document.getElementById('spline-scene');
-  if(!el)return;
-  function tryHide(){
-    const root=el.shadowRoot;
-    if(!root)return;
-    // Spline injects a #logo anchor in the shadow root
-    const badge=root.querySelector('#logo');
-    if(badge){badge.style.display='none';return;}
-    // Also try the canvas parent div if badge not yet found
-    const all=root.querySelectorAll('a[href*="spline"],div[id*="logo"],div[class*="logo"]');
-    all.forEach(n=>n.style.display='none');
-  }
-  // Try immediately, then poll until found
-  tryHide();
-  const t=setInterval(()=>{tryHide();},200);
-  // Stop polling after 8 seconds
-  setTimeout(()=>clearInterval(t),8000);
-  // Also run when spline-viewer fires its load event
-  el.addEventListener('load',()=>{tryHide();clearInterval(t);});
 })();
 </script>
 </body>
